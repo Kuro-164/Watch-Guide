@@ -7,6 +7,7 @@ namespace WatchGuideAPI.Services
     {
         Task<List<TMDBSearchResult>> SearchContent(string query);
         Task<ContentDetailsResponse> GetContentDetails(int tmdbId, string mediaType);
+        Task<List<TMDBSearchResult>> GetWeeklyTrending();
     }
 
     public class TMDBService : ITMDBService
@@ -14,31 +15,31 @@ namespace WatchGuideAPI.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
         private readonly string _baseUrl;
+        private readonly IWatchmodeService _watchmodeService;
 
-        public TMDBService(IConfiguration configuration, HttpClient httpClient)
+        public TMDBService(IConfiguration configuration, HttpClient httpClient, IWatchmodeService watchmodeService)
         {
-            _httpClient = httpClient; // Use injected HttpClient
+            _httpClient = httpClient;
             _apiKey = configuration["APIs:TMDB:ApiKey"];
             _baseUrl = configuration["APIs:TMDB:BaseUrl"];
+            _watchmodeService = watchmodeService;
         }
 
         public async Task<List<TMDBSearchResult>> SearchContent(string query)
         {
             try
             {
-                // FIX 1: Use search/multi with language parameter for better results
                 string url = $"{_baseUrl}/search/multi?api_key={_apiKey}&query={Uri.EscapeDataString(query)}&language=en-US";
 
-                Console.WriteLine($"Calling TMDB: {url}"); // DEBUG: Log the URL
+                Console.WriteLine($"Calling TMDB: {url}");
 
                 var response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
                 var content = await response.Content.ReadAsStringAsync();
 
-                Console.WriteLine($"TMDB Response: {content}"); // DEBUG: Log response
+                Console.WriteLine($"TMDB Response: {content}");
 
-                // FIX 2: Use more flexible JSON options to handle missing properties
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
@@ -48,18 +49,17 @@ namespace WatchGuideAPI.Services
 
                 var result = JsonSerializer.Deserialize<SearchResponse>(content, options);
 
-                // Filter only movies and TV shows
                 var filteredResults = result?.Results?
                     .Where(r => r.MediaType == "movie" || r.MediaType == "tv")
                     .ToList() ?? new List<TMDBSearchResult>();
 
-                Console.WriteLine($"Filtered results count: {filteredResults.Count}"); // DEBUG
+                Console.WriteLine($"Filtered results count: {filteredResults.Count}");
 
                 return filteredResults;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"TMDB Error: {ex.Message}"); // DEBUG
+                Console.WriteLine($"TMDB Error: {ex.Message}");
                 throw new Exception($"TMDB search failed: {ex.Message}");
             }
         }
@@ -99,15 +99,46 @@ namespace WatchGuideAPI.Services
                         ? genres.EnumerateArray()
                             .Select(g => g.GetProperty("name").GetString())
                             .ToList()
-                        : new List<string>(),
-                    StreamingPlatforms = new List<string>()
+                        : new List<string>()
                 };
+
+                details.StreamingPlatforms = await _watchmodeService.GetStreamingPlatforms(tmdbId, mediaType);
 
                 return details;
             }
             catch (Exception ex)
             {
                 throw new Exception($"Failed to get content details: {ex.Message}");
+            }
+        }
+
+        public async Task<List<TMDBSearchResult>> GetWeeklyTrending()
+        {
+            try
+            {
+                string url = $"{_baseUrl}/trending/all/week?api_key={_apiKey}&language=en-US";
+
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                var content = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                };
+
+                var result = JsonSerializer.Deserialize<SearchResponse>(content, options);
+
+                return result?.Results?
+                    .Where(r => r.MediaType == "movie" || r.MediaType == "tv")
+                    .ToList()
+                    ?? new List<TMDBSearchResult>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"TMDB trending failed: {ex.Message}");
             }
         }
     }
