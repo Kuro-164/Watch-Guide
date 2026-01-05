@@ -1,38 +1,30 @@
-using Microsoft.EntityFrameworkCore;
-using WatchGuideAPI.Data;
 using WatchGuideAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Database
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpClient<IWatchmodeService, WatchGuideAPI.Services.WatchmodeService>();
+builder.Services.AddHttpClient<ITMDBService, WatchGuideAPI.Services.TMDBService>();
 
-// Register all services
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddHttpClient<ITMDBService, TMDBService>();
-builder.Services.AddHttpClient<IWatchmodeService, WatchmodeService>();
-builder.Services.AddScoped<IContentService, ContentService>();
+builder.Services.AddScoped<IAuthService, WatchGuideAPI.Services.AuthService>();
+builder.Services.AddScoped<IWatchmodeService, WatchGuideAPI.Services.WatchmodeService>();
+builder.Services.AddScoped<ITMDBService, WatchGuideAPI.Services.TMDBService>();
+builder.Services.AddScoped<ITrendingService, WatchGuideAPI.Services.TrendingService>();
 
-// Add CORS for your Windows Forms app
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 var app = builder.Build();
 
-// Configure
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

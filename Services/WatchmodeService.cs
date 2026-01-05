@@ -3,36 +3,112 @@ using WatchGuideAPI.DTOs;
 
 namespace WatchGuideAPI.Services
 {
+    public interface IWatchmodeService
+    {
+        Task<List<StreamingPlatformDto>> GetStreamingPlatforms(int tmdbId, string mediaType);
+    }
+
     public class WatchmodeService : IWatchmodeService
     {
         private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly string _apiKey;
+        private readonly string _baseUrl;
+        private readonly ILogger<WatchmodeService> _logger;
 
-        public WatchmodeService(HttpClient httpClient, IConfiguration configuration)
+        public WatchmodeService(
+            IConfiguration configuration,
+            HttpClient httpClient,
+            ILogger<WatchmodeService> logger)
         {
             _httpClient = httpClient;
-            _configuration = configuration;
+            _apiKey = configuration["APIs:Watchmode:ApiKey"];
+            _baseUrl = configuration["APIs:Watchmode:BaseUrl"];
+            _logger = logger;
         }
 
-        public async Task<List<WatchmodeSourceDto>> GetStreamingSources(int tmdbId, string mediaType)
+        public async Task<List<StreamingPlatformDto>> GetStreamingPlatforms(int tmdbId, string mediaType)
         {
-            var apiKey = _configuration["APIs:Watchmode:ApiKey"];
+            try
+            {
+                var watchmodeId = await GetWatchmodeId(tmdbId, mediaType);
 
-            if (string.IsNullOrEmpty(apiKey))
-                return new List<WatchmodeSourceDto>();
+                if (watchmodeId == null)
+                {
+                    _logger.LogWarning($"No Watchmode ID found for TMDB ID: {tmdbId}");
+                    return new List<StreamingPlatformDto>();
+                }
 
-            var url =
-                $"https://api.watchmode.com/v1/title/{tmdbId}/sources/?apiKey={apiKey}";
+                var url = $"{_baseUrl}/title/{watchmodeId}/sources/?apiKey={_apiKey}&regions=IN";
 
-            var response = await _httpClient.GetAsync(url);
+                var response = await _httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                    return new List<StreamingPlatformDto>();
 
-            if (!response.IsSuccessStatusCode)
-                return new List<WatchmodeSourceDto>();
+                var content = await response.Content.ReadAsStringAsync();
 
-            var json = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                };
 
-            return JsonSerializer.Deserialize<List<WatchmodeSourceDto>>(json)
-                   ?? new List<WatchmodeSourceDto>();
+                var sources = JsonSerializer.Deserialize<List<WatchmodeSource>>(content, options);
+
+                return sources?
+                    .Where(s => !string.IsNullOrEmpty(s.Name))
+                    .GroupBy(s => s.Name)
+                    .Select(g => new StreamingPlatformDto
+                    {
+                        Name = g.First().Name,
+                        Logo = g.First().Logo,
+                        Url = g.First().WebUrl,
+                        Type = FormatType(g.First().Type)
+                    })
+                    .ToList() ?? new List<StreamingPlatformDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching streaming platforms");
+                return new List<StreamingPlatformDto>();
+            }
         }
+
+        private async Task<int?> GetWatchmodeId(int tmdbId, string mediaType)
+        {
+            try
+            {
+                var type = mediaType == "movie" ? "movie" : "tv";
+                var url = $"{_baseUrl}/search/?apiKey={_apiKey}&search_field=tmdb_id&search_value={tmdbId}&types={type}";
+
+                var response = await _httpClient.GetAsync(url);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                var content = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+                };
+
+                var searchResult = JsonSerializer.Deserialize<WatchmodeSearchResponse>(content, options);
+                return searchResult?.TitleResults?.FirstOrDefault()?.Id;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private string FormatType(string type) =>
+            type?.ToLower() switch
+            {
+                "sub" => "Subscription",
+                "free" => "Free",
+                "rent" => "Rent",
+                "buy" => "Buy",
+                _ => type ?? "Other"
+            };
     }
 }

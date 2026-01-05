@@ -3,88 +3,55 @@ using WatchGuideAPI.Services;
 
 namespace WatchGuideAPI.Controllers
 {
+    // Controllers/ContentController.cs
+
     [ApiController]
     [Route("api/[controller]")]
     public class ContentController : ControllerBase
     {
         private readonly ITMDBService _tmdbService;
-        private readonly IContentService _contentService;
+        private readonly ITrendingService _trendingService; // NEW
 
-        public ContentController(ITMDBService tmdbService, IContentService contentService)
+        public ContentController(ITMDBService tmdbService, ITrendingService trendingService)
         {
             _tmdbService = tmdbService;
-            _contentService = contentService;
+            _trendingService = trendingService;
         }
 
-        // Search content (no caching - always fresh)
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] string query)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(query))
-                {
-                    return BadRequest(new { message = "Search query is required" });
-                }
-
-                var results = await _tmdbService.SearchContent(query);
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var results = await _tmdbService.SearchContent(query);
+            return Ok(results);
         }
 
-        // Get content details WITH caching and streaming sources
-        [HttpGet("{tmdbId}/details")]
-        public async Task<IActionResult> GetDetails(int tmdbId, [FromQuery] string mediaType)
+        [HttpGet("{id}/details")]
+        public async Task<IActionResult> GetDetails(int id, [FromQuery] string mediaType = "tv")
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(mediaType))
-                {
-                    return BadRequest(new { message = "Media type (movie or tv) is required" });
-                }
-
-                // This will check cache first, then fetch fresh data if needed
-                var details = await _contentService.GetOrCacheContent(tmdbId, mediaType);
-                return Ok(details);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var details = await _tmdbService.GetContentDetails(id, mediaType);
+            return Ok(details);
         }
 
-        // Get trending content for home page
+        // ✨ NEW ENDPOINT - Returns cached trending (auto-refreshes if needed)
         [HttpGet("trending")]
-        public async Task<IActionResult> GetTrending([FromQuery] int count = 10)
+        public async Task<IActionResult> GetTrending()
         {
             try
             {
-                var trending = await _contentService.GetTrendingContent(count);
-                return Ok(trending);
+                var trending = await _trendingService.GetTrendingContent();
+                return Ok(new
+                {
+                    data = trending,
+                    cached = trending.FirstOrDefault()?.CachedAt,
+                    expires = trending.FirstOrDefault()?.ExpiresAt,
+                    count = trending.Count
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        // Get personalized recommendations
-        [HttpGet("recommendations/{userId}")]
-        public async Task<IActionResult> GetRecommendations(Guid userId, [FromQuery] int count = 10)
-        {
-            try
-            {
-                var recommendations = await _contentService.GetRecommendations(userId, count);
-                return Ok(recommendations);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
+                return StatusCode(500, new { error = ex.Message });
             }
         }
     }
 }
+    
