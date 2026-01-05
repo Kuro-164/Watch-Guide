@@ -20,7 +20,7 @@ namespace WatchGuideAPI.Services
             ITMDBService tmdbService,
             ILogger<TrendingService> logger)
         {
-            _connectionString = configuration.GetConnectionString("SupabaseConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection")!;
             _tmdbService = tmdbService;
             _logger = logger;
         }

@@ -73,8 +73,8 @@ namespace WatchGuideAPI.Services
         {
             try
             {
-                var type = mediaType == "movie" ? "movie" : "tv";
-                var url = $"{_baseUrl}/search/?apiKey={_apiKey}&search_field=tmdb_id&search_value={tmdbId}&types={type}";
+                var searchField = mediaType == "movie" ? "tmdb_movie_id" : "tmdb_tv_id";
+                var url = $"{_baseUrl}/search/?"+$"apiKey={_apiKey}&"+$"search_field={searchField}&" +$"search_value={tmdbId}";
 
                 var response = await _httpClient.GetAsync(url);
                 if (!response.IsSuccessStatusCode)

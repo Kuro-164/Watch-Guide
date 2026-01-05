@@ -20,6 +20,7 @@ namespace WatchGuideAPI.Data
         public DbSet<ContentGenre> ContentGenres { get; set; }
         public DbSet<ContentCast> ContentCast { get; set; }
         public DbSet<ContentPlatform> ContentPlatforms { get; set; }
+        public DbSet<TrendingCache> TrendingCaches { get; set; }
 
         // (Optional, if you already have this model)
         public DbSet<StreamingPlatform> StreamingPlatforms { get; set; }
@@ -44,6 +45,11 @@ namespace WatchGuideAPI.Data
 
             modelBuilder.Entity<Content>()
                 .HasIndex(c => c.CachedUntil);
+
+            // 🔥 TrendingCache configuration 
+            modelBuilder.Entity<TrendingCache>()
+                .Property(t => t.GenreIds)
+                .HasColumnType("integer[]");
         }
     }
 }
