@@ -1,6 +1,14 @@
 using WatchGuideAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using WatchGuideAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -10,6 +18,7 @@ builder.Services.AddHttpClient<IWatchmodeService, WatchGuideAPI.Services.Watchmo
 builder.Services.AddHttpClient<ITMDBService, WatchGuideAPI.Services.TMDBService>();
 
 builder.Services.AddScoped<IAuthService, WatchGuideAPI.Services.AuthService>();
+builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IWatchmodeService, WatchGuideAPI.Services.WatchmodeService>();
 builder.Services.AddScoped<ITMDBService, WatchGuideAPI.Services.TMDBService>();
 builder.Services.AddScoped<ITrendingService, WatchGuideAPI.Services.TrendingService>();

@@ -102,7 +102,7 @@ namespace WatchGuideAPI.Services
                         : new List<string>()
                 };
 
-                details.StreamingPlatforms = await _watchmodeService.GetStreamingPlatforms(tmdbId, mediaType);
+                details.StreamingPlatforms = await _watchmodeService.GetStreamingSources(tmdbId, mediaType);
 
                 return details;
             }

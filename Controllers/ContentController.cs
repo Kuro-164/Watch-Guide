@@ -11,11 +11,13 @@ namespace WatchGuideAPI.Controllers
     {
         private readonly ITMDBService _tmdbService;
         private readonly ITrendingService _trendingService; // NEW
+        private readonly IContentService _contentService;
 
-        public ContentController(ITMDBService tmdbService, ITrendingService trendingService)
+        public ContentController(ITMDBService tmdbService, ITrendingService trendingService, IContentService contentService)
         {
             _tmdbService = tmdbService;
             _trendingService = trendingService;
+            _contentService = contentService;
         }
 
         [HttpGet("search")]
@@ -51,6 +53,12 @@ namespace WatchGuideAPI.Controllers
             {
                 return StatusCode(500, new { error = ex.Message });
             }
+        }
+        [HttpGet("recommendations/{userId}")]
+        public async Task<IActionResult> GetRecommendations(Guid userId)
+        {
+            var data = await _contentService.GetRecommendations(userId);
+            return Ok(data);
         }
     }
 }

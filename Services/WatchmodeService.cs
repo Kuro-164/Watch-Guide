@@ -3,10 +3,6 @@ using WatchGuideAPI.DTOs;
 
 namespace WatchGuideAPI.Services
 {
-    public interface IWatchmodeService
-    {
-        Task<List<StreamingPlatformDto>> GetStreamingPlatforms(int tmdbId, string mediaType);
-    }
 
     public class WatchmodeService : IWatchmodeService
     {
@@ -26,7 +22,7 @@ namespace WatchGuideAPI.Services
             _logger = logger;
         }
 
-        public async Task<List<StreamingPlatformDto>> GetStreamingPlatforms(int tmdbId, string mediaType)
+        public async Task<List<StreamingPlatformDto>> GetStreamingSources(int tmdbId, string mediaType)
         {
             try
             {
@@ -110,5 +106,7 @@ namespace WatchGuideAPI.Services
                 "buy" => "Buy",
                 _ => type ?? "Other"
             };
+
+        
     }
 }

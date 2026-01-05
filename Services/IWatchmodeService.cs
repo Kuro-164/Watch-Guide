@@ -4,6 +4,6 @@ namespace WatchGuideAPI.Services
 {
     public interface IWatchmodeService
     {
-        Task<List<WatchmodeDtos>> GetStreamingSources(int tmdbId, string mediaType);
+        Task<List<StreamingPlatformDto>> GetStreamingSources(int tmdbId, string mediaType);
     }
 }
