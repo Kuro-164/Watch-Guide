@@ -68,6 +68,22 @@ namespace WatchGuideAPI.Controllers
             return Ok(results);
         }
 
+        // 🕘 SEARCH HISTORY 
+        [HttpGet("search/history/{userId}")]
+        public async Task<IActionResult> GetSearchHistory(Guid userId)
+        {
+            var history = await _context.SearchHistories
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.SearchedAt)
+                .Select(s => new
+                {
+                    s.Keyword,
+                    s.SearchedAt
+                })
+                .ToListAsync();
+
+            return Ok(history);
+        }
 
 
         [HttpGet("{id}/details")]
