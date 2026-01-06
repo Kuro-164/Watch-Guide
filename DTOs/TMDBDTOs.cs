@@ -10,8 +10,8 @@
         public string? BackdropPath { get; set; }
         public double? VoteAverage { get; set; }
         public string? Overview { get; set; }
-        public DateTime? ReleaseDate { get; set; }
-        public DateTime? FirstAirDate { get; set; }
+        public string? ReleaseDate { get; set; }
+        public string? FirstAirDate { get; set; }
         public List<int>? GenreIds { get; set; }
     }
 

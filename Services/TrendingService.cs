@@ -128,7 +128,18 @@ namespace WatchGuideAPI.Services
                         ? $"https://image.tmdb.org/t/p/original{item.BackdropPath}"
                         : null;
 
-                    DateTime? releaseDate = item.MediaType == "tv" ? item.FirstAirDate : item.ReleaseDate;
+                    DateTime? releaseDate = null;
+
+                    var rawDate = item.MediaType == "tv"
+                        ? item.FirstAirDate
+                        : item.ReleaseDate;
+
+                    if (!string.IsNullOrWhiteSpace(rawDate) &&
+                        DateTime.TryParse(rawDate, out var parsedDate))
+                    {
+                        releaseDate = parsedDate;
+                    }
+
 
                     insertCmd.Parameters.AddWithValue("tmdbId", item.Id);
                     insertCmd.Parameters.AddWithValue("title", title ?? "Unknown");
