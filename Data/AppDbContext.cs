@@ -22,7 +22,10 @@ namespace WatchGuideAPI.Data
         public DbSet<ContentPlatform> ContentPlatforms { get; set; }
         public DbSet<TrendingCache> TrendingCaches { get; set; }
 
-        // (Optional, if you already have this model)
+        // 🔍 SEARCH HISTORY
+        public DbSet<SearchHistory> SearchHistories { get; set; }
+
+        // Streaming Platform
         public DbSet<StreamingPlatform> StreamingPlatforms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

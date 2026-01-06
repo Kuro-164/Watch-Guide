@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WatchGuideAPI.Data;
+using WatchGuideAPI.Models;
 using WatchGuideAPI.Services;
 
 namespace WatchGuideAPI.Controllers
@@ -12,20 +15,60 @@ namespace WatchGuideAPI.Controllers
         private readonly ITMDBService _tmdbService;
         private readonly ITrendingService _trendingService; // NEW
         private readonly IContentService _contentService;
+        private readonly AppDbContext _context;
 
-        public ContentController(ITMDBService tmdbService, ITrendingService trendingService, IContentService contentService)
+        public ContentController(ITMDBService tmdbService, ITrendingService trendingService, IContentService contentService, AppDbContext context)
         {
             _tmdbService = tmdbService;
             _trendingService = trendingService;
             _contentService = contentService;
+            _context = context;
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string query)
+        public async Task<IActionResult> Search(
+    string query,
+    [FromQuery] Guid? userId = null)
         {
+            if (!string.IsNullOrWhiteSpace(query) && userId.HasValue)
+            {
+                // 🧹 Auto-cleanup: delete searches older than 7 days
+                var cutoffDate = DateTime.UtcNow.AddDays(-7);
+
+                await _context.SearchHistories
+                    .Where(s => s.SearchedAt < cutoffDate)
+                    .ExecuteDeleteAsync();
+
+                // 🔁 Prevent duplicate keyword per user
+                var existingSearch = await _context.SearchHistories
+                    .FirstOrDefaultAsync(s =>
+                        s.UserId == userId.Value &&
+                        s.Keyword.ToLower() == query.ToLower());
+
+                if (existingSearch != null)
+                {
+                    // Update timestamp if keyword already exists
+                    existingSearch.SearchedAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    // Insert new keyword
+                    _context.SearchHistories.Add(new SearchHistory
+                    {
+                        UserId = userId.Value,
+                        Keyword = query
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            // 🔍 Existing TMDB search logic (unchanged)
             var results = await _tmdbService.SearchContent(query);
             return Ok(results);
         }
+
+
 
         [HttpGet("{id}/details")]
         public async Task<IActionResult> GetDetails(int id, [FromQuery] string mediaType = "tv")
