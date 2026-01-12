@@ -31,5 +31,6 @@
         public float Rating { get; set; }
         public List<string> Genres { get; set; } = new();
         public List<StreamingPlatformDto> StreamingPlatforms { get; set; } = new();
+        public List<CastDto> Cast { get; set; } = new();
     }
 }

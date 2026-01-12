@@ -6,7 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsql =>
+        {
+            npgsql.EnableRetryOnFailure();
+            npgsql.CommandTimeout(60);
+        }
     )
 );
 

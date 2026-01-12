@@ -60,7 +60,7 @@ namespace WatchGuideAPI.Services
         {
             // Find user
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
 
             if (user == null)
             {

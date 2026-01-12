@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using WatchGuideAPI.DTOs;
+using static System.Net.WebRequestMethods;
 
 namespace WatchGuideAPI.Services
 {
@@ -8,6 +9,8 @@ namespace WatchGuideAPI.Services
         Task<List<TMDBSearchResult>> SearchContent(string query);
         Task<ContentDetailsResponse> GetContentDetails(int tmdbId, string mediaType);
         Task<List<TMDBSearchResult>> GetWeeklyTrending();
+        Task<List<CastDto>> GetCast(int tmdbId, string mediaType);
+
     }
 
     public class TMDBService : ITMDBService
@@ -103,6 +106,8 @@ namespace WatchGuideAPI.Services
                 };
 
                 details.StreamingPlatforms = await _watchmodeService.GetStreamingSources(tmdbId, mediaType);
+                details.Cast = await GetCast(tmdbId, mediaType);
+
 
                 return details;
             }
@@ -141,5 +146,25 @@ namespace WatchGuideAPI.Services
                 throw new Exception($"TMDB trending failed: {ex.Message}");
             }
         }
+
+        public async Task<List<CastDto>> GetCast(int tmdbId, string mediaType)
+        {
+            var url = $"https://api.themoviedb.org/3/{mediaType}/{tmdbId}/credits?api_key={_apiKey}";
+
+            var response = await _httpClient.GetStringAsync(url);
+            var data = JsonSerializer.Deserialize<TmdbCreditsDto>(response);
+
+            return data.Cast
+                .Where(c => c.ProfilePath != null)
+                .Take(12)
+                .Select(c => new CastDto
+                {
+                    Name = c.Name,
+                    Character = c.Character,
+                    Photo = "https://image.tmdb.org/t/p/w200" + c.ProfilePath
+                })
+                .ToList();
+        }
+
     }
 }

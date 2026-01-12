@@ -49,21 +49,30 @@ namespace WatchGuideAPI.Controllers
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
-        {
+        {  // 🔍 DEBUG START (TEMPORARY)
+            var users = await _context.Users.ToListAsync();
+            Console.WriteLine($"USERS FOUND: {users.Count}");
+
+            foreach (var u in users)
+            {
+                Console.WriteLine($"DB USERNAME: [{u.Username}]");
+            }
+            // 🔍 DEBUG END
+
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
 
             if (user == null)
                 return NotFound(new { message = "User not found" });
 
-            return Ok(new { message = "User verified. Proceed to reset password." });
+            return Ok(new { message = "User verified" });
         }
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
 
             if (user == null)
                 return NotFound(new { message = "User not found" });
