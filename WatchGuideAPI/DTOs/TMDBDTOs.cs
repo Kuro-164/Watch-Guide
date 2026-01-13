@@ -1,4 +1,6 @@
-﻿namespace WatchGuideAPI.DTOs
+﻿using System.Text.Json.Serialization;
+
+namespace WatchGuideAPI.DTOs
 {
     public class TMDBSearchResult
     {
@@ -13,6 +15,9 @@
         public string? ReleaseDate { get; set; }
         public string? FirstAirDate { get; set; }
         public List<int>? GenreIds { get; set; }
+
+        [JsonPropertyName("original_language")]
+        public string? OriginalLanguage { get; set; }
     }
 
     public class SearchResponse

@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build folders
+**/bin/
+**/obj/
+
+# .NET build outputs
+*.dll
+*.exe
+*.pdb
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store

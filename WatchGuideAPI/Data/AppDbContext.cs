@@ -49,6 +49,10 @@ namespace WatchGuideAPI.Data
             modelBuilder.Entity<Content>()
                 .HasIndex(c => c.CachedUntil);
 
+            // 🔥 FIX: map EF entity to Supabase table
+            modelBuilder.Entity<TrendingCache>()
+                .ToTable("trending_cache");
+
             // 🔥 TrendingCache configuration 
             modelBuilder.Entity<TrendingCache>()
                 .Property(t => t.GenreIds)

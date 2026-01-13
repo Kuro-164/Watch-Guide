@@ -66,19 +66,22 @@ namespace WinFormsApp1
 
                 var json = await client.GetStringAsync(url);
 
-                var response = JsonSerializer.Deserialize<ApiResponse<List<HomeContentDto>>>(json, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                var results = JsonSerializer.Deserialize<List<HomeContentDto>>(
+                     json,
+                     new JsonSerializerOptions
+                     {
+                         PropertyNameCaseInsensitive = true
+                     });
 
                 flpRecommended.Controls.Clear();
 
-                foreach (var item in response.Data)
+                foreach (var item in results)
                 {
                     var card = new MovieCard();
                     card.SetData(item.Title, item.PosterUrl, item.TmdbId, item.MediaType);
                     flpRecommended.Controls.Add(card);
                 }
+
             }
             catch (Exception ex)
             {

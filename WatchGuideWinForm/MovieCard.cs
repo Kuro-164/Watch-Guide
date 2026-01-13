@@ -21,7 +21,14 @@ namespace WinFormsApp1
 
             if (!string.IsNullOrEmpty(posterUrl))
             {
-                picPoster.LoadAsync(posterUrl);
+                picPoster.SizeMode = PictureBoxSizeMode.Zoom;
+
+                string fullUrl = "https://image.tmdb.org/t/p/w500" + posterUrl;
+                picPoster.LoadAsync(fullUrl);
+            }
+            else
+            {
+                picPoster.Image = null;
             }
         }
 

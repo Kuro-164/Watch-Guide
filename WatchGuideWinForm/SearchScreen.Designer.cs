@@ -28,45 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            flowResults = new FlowLayoutPanel();
-            btnSearch = new Button();
             panel1 = new Panel();
-            btnBack = new Button();
+            btnSearch = new Button();
             txtSearch = new TextBox();
+            btnBack = new Button();
+            flowResults = new FlowLayoutPanel();
             panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // flowResults
-            // 
-            flowResults.AutoScroll = true;
-            flowResults.BackColor = Color.Transparent;
-            flowResults.Dock = DockStyle.Fill;
-            flowResults.Location = new Point(0, 52);
-            flowResults.Name = "flowResults";
-            flowResults.Size = new Size(1264, 629);
-            flowResults.TabIndex = 0;
-            // 
-            // btnSearch
-            // 
-            btnSearch.Location = new Point(1189, 0);
-            btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(75, 23);
-            btnSearch.TabIndex = 2;
-            btnSearch.Text = "Search  🔍︎ ";
-            btnSearch.UseVisualStyleBackColor = true;
-            btnSearch.Click += btnSearch_Click;
             // 
             // panel1
             // 
             panel1.BackColor = Color.Transparent;
-            panel1.Controls.Add(btnBack);
+            panel1.Controls.Add(btnSearch);
             panel1.Controls.Add(txtSearch);
+            panel1.Controls.Add(btnBack);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
+            panel1.MaximumSize = new Size(0, 70);
+            panel1.MinimumSize = new Size(0, 70);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1264, 52);
+            panel1.Size = new Size(1264, 70);
             panel1.TabIndex = 3;
-            panel1.Visible = false;
+            // 
+            // btnSearch
+            // 
+            btnSearch.BackColor = Color.FromArgb(43, 43, 43);
+            btnSearch.FlatStyle = FlatStyle.Flat;
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(1194, 0);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(75, 23);
+            btnSearch.TabIndex = 3;
+            btnSearch.Text = "Search  🔍︎ ";
+            btnSearch.UseVisualStyleBackColor = false;
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // txtSearch
+            // 
+            txtSearch.BorderStyle = BorderStyle.FixedSingle;
+            txtSearch.Location = new Point(118, 2);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(1151, 23);
+            txtSearch.TabIndex = 0;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // btnBack
             // 
@@ -80,20 +84,21 @@
             btnBack.UseVisualStyleBackColor = true;
             btnBack.Click += btnBack_Click;
             // 
-            // txtSearch
+            // flowResults
             // 
-            txtSearch.Location = new Point(118, 2);
-            txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(1151, 23);
-            txtSearch.TabIndex = 0;
+            flowResults.AutoScroll = true;
+            flowResults.BackColor = Color.Black;
+            flowResults.Dock = DockStyle.Fill;
+            flowResults.Location = new Point(0, 70);
+            flowResults.Name = "flowResults";
+            flowResults.Size = new Size(1264, 611);
+            flowResults.TabIndex = 4;
             // 
             // SearchScreen
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.BlackBG;
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.FromArgb(18, 18, 18);
             ClientSize = new Size(1264, 681);
-            Controls.Add(btnSearch);
             Controls.Add(flowResults);
             Controls.Add(panel1);
             MinimumSize = new Size(1280, 720);
@@ -105,11 +110,10 @@
         }
 
         #endregion
-
-        private FlowLayoutPanel flowResults;
         private Button btnSearch;
         private Panel panel1;
         private TextBox txtSearch;
         private Button btnBack;
+        private FlowLayoutPanel flowResults;
     }
 }

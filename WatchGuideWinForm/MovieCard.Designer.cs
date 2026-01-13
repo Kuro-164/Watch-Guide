@@ -35,7 +35,8 @@
             // 
             // lblTitle
             // 
-            lblTitle.BackColor = Color.FromArgb(17, 17, 17);
+            lblTitle.BackColor = Color.FromArgb(30, 30, 30);
+            lblTitle.Cursor = Cursors.Hand;
             lblTitle.Dock = DockStyle.Bottom;
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(0, 180);
@@ -49,18 +50,20 @@
             // 
             // picPoster
             // 
+            picPoster.Cursor = Cursors.Hand;
             picPoster.Dock = DockStyle.Top;
             picPoster.Location = new Point(0, 0);
             picPoster.Name = "picPoster";
             picPoster.Size = new Size(140, 180);
-            picPoster.TabIndex = 2;
+            picPoster.SizeMode = PictureBoxSizeMode.Zoom;
+            picPoster.TabIndex = 3;
             picPoster.TabStop = false;
-            picPoster.Click += MovieCard_Click;
             // 
             // MovieCard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
             Controls.Add(picPoster);
             Controls.Add(lblTitle);
             Margin = new Padding(10);

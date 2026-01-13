@@ -14,6 +14,11 @@ namespace WinFormsApp1
         public SearchScreen()
         {
             InitializeComponent();
+
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint |
+                          ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private async Task SearchAsync(string query)
@@ -30,14 +35,19 @@ namespace WinFormsApp1
             try
             {
                 var json = await client.GetStringAsync(url);
-                var results = JsonSerializer.Deserialize<List<SearchResultDto>>(json);
+                var results = JsonSerializer.Deserialize<List<ContentCardDto>>(
+                     json,
+                     new JsonSerializerOptions
+                     {
+                         PropertyNameCaseInsensitive = true
+                     });
 
                 flowResults.Controls.Clear();
 
                 foreach (var item in results)
                 {
                     var card = new MovieCard();
-                    card.SetData(item.Title, item.PosterUrl, item.TmdbId, item.Type);
+                    card.SetData(item.Title, item.PosterUrl, item.TmdbId, item.MediaType);
                     flowResults.Controls.Add(card);
                 }
             }

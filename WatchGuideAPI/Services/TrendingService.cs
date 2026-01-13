@@ -57,7 +57,7 @@ namespace WatchGuideAPI.Services
         {
             var sql = @"
                 SELECT id, tmdb_id, title, media_type, poster_url, backdrop_url, 
-                       rating, overview, release_date, genre_ids, trending_rank, 
+                       rating, overview, release_date, genre_ids, language, trending_rank, 
                        cached_at, expires_at
                 FROM trending_cache
                 ORDER BY trending_rank ASC
@@ -82,9 +82,10 @@ namespace WatchGuideAPI.Services
                     Overview = reader.IsDBNull(7) ? null : reader.GetString(7),
                     ReleaseDate = reader.IsDBNull(8) ? null : reader.GetDateTime(8),
                     GenreIds = reader.IsDBNull(9) ? null : (int[])reader.GetValue(9),
-                    TrendingRank = reader.GetInt32(10),
-                    CachedAt = reader.GetDateTime(11),
-                    ExpiresAt = reader.GetDateTime(12)
+                    Language = reader.IsDBNull(10) ? null : reader.GetString(10),
+                    TrendingRank = reader.GetInt32(11),
+                    CachedAt = reader.GetDateTime(12),
+                    ExpiresAt = reader.GetDateTime(13)
                 });
             }
 
@@ -106,10 +107,10 @@ namespace WatchGuideAPI.Services
                 var insertSql = @"
                     INSERT INTO trending_cache 
                     (tmdb_id, title, media_type, poster_url, backdrop_url, rating, 
-                     overview, release_date, genre_ids, trending_rank, expires_at)
+                     overview, release_date, genre_ids, language, trending_rank, expires_at)
                     VALUES 
                     (@tmdbId, @title, @mediaType, @posterUrl, @backdropUrl, @rating, 
-                     @overview, @releaseDate, @genreIds, @rank, @expiresAt)";
+                     @overview, @releaseDate, @genreIds, @language, @rank, @expiresAt)";
 
                 var expiresAt = DateTime.UtcNow.AddDays(7);
                 int rank = 1;
@@ -150,6 +151,7 @@ namespace WatchGuideAPI.Services
                     insertCmd.Parameters.AddWithValue("overview", (object?)item.Overview ?? DBNull.Value);
                     insertCmd.Parameters.AddWithValue("releaseDate", releaseDate.HasValue ? (object)releaseDate.Value : DBNull.Value);
                     insertCmd.Parameters.AddWithValue("genreIds", item.GenreIds?.ToArray() ?? Array.Empty<int>());
+                    insertCmd.Parameters.AddWithValue("language",item.OriginalLanguage ?? (object)DBNull.Value);
                     insertCmd.Parameters.AddWithValue("rank", rank++);
                     insertCmd.Parameters.AddWithValue("expiresAt", expiresAt);
 

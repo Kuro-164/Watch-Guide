@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchGuideAPI.Data;
+using WatchGuideAPI.DTOs;
 using WatchGuideAPI.Models;
 using WatchGuideAPI.Services;
 
@@ -12,6 +13,31 @@ namespace WatchGuideAPI.Controllers
     [Route("api/[controller]")]
     public class ContentController : ControllerBase
     {
+        private static readonly Dictionary<string, int> TmdbGenreMap = new()
+        {
+            { "Action", 28 },
+            { "Adventure", 12 },
+            { "Animation", 16 },
+            { "Comedy", 35 },
+            { "Crime", 80 },
+            { "Drama", 18 },
+            { "Fantasy", 14 },
+            { "Horror", 27 },
+            { "Romance", 10749 },
+            { "Sci-Fi", 878 },
+            { "Thriller", 53 }
+         };
+        private static readonly Dictionary<string, string> TmdbLanguageMap = new()
+        {
+            { "English", "en" },
+            { "Hindi", "hi" },
+            { "Tamil", "ta" },
+            { "Telugu", "te" },
+            { "Malayalam", "ml" },
+            { "Kannada", "kn" },
+            { "Japanese", "ja" },
+            { "Korean", "ko" }
+        };
         private readonly ITMDBService _tmdbService;
         private readonly ITrendingService _trendingService; // NEW
         private readonly IContentService _contentService;
@@ -63,8 +89,17 @@ namespace WatchGuideAPI.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // 🔍 Existing TMDB search logic (unchanged)
-            var results = await _tmdbService.SearchContent(query);
+            // 🔥 Convert TMDB results into ContentCardDto
+            var tmdbResults = await _tmdbService.SearchContent(query);
+
+            var results = tmdbResults.Select(t => new ContentCardDto
+            {
+                TmdbId = t.Id,
+                Title = t.Title ?? t.Name,
+                MediaType = t.MediaType,
+                PosterUrl = t.PosterPath
+            }).ToList();
+
             return Ok(results);
         }
 
@@ -116,9 +151,68 @@ namespace WatchGuideAPI.Controllers
         [HttpGet("recommendations/{userId}")]
         public async Task<IActionResult> GetRecommendations(Guid userId)
         {
-            var data = await _contentService.GetRecommendations(userId);
-            return Ok(data);
+            // 1️⃣ Get user preferences
+            var userGenres = await _context.UserGenrePreferences
+                .Where(g => g.UserId == userId)
+                .Select(g => g.Genre)
+                .ToListAsync();
+
+            var userGenreIds = userGenres
+                .Where(g => TmdbGenreMap.ContainsKey(g))
+                .Select(g => TmdbGenreMap[g])
+                .ToList();
+
+            var userLanguages = await _context.UserLanguagePreferences
+                .Where(l => l.UserId == userId)
+                .Select(l => l.Language)
+                .ToListAsync();
+
+            var userLanguageCodes = userLanguages
+                .Where(l => TmdbLanguageMap.ContainsKey(l))
+                .Select(l => TmdbLanguageMap[l])
+                .ToList();
+
+            // 2️⃣ Load trending cache
+            var trending = await _context.TrendingCaches.ToListAsync();
+
+            // 3️⃣ Filter by genres (if user selected any)
+            if (userGenreIds.Any())
+            {
+                trending = trending
+                    .Where(t => t.GenreIds != null &&
+                                t.GenreIds.Any(g => userGenreIds.Contains(g)))
+                    .ToList();
+            }
+
+            if (userLanguageCodes.Any())
+            {
+                trending = trending
+                    .Where(t => t.Language != null &&
+                                userLanguageCodes.Contains(t.Language))
+                    .ToList();
+            }
+
+            // 4️⃣ (Optional later) Filter by language
+            // We will plug this when we store language per content
+
+            // 5️⃣ Sort by popularity
+            trending = trending
+                .OrderBy(t => t.TrendingRank)
+                .Take(20)
+                .ToList();
+
+            // 6️⃣ Convert to DTO
+            var result = trending.Select(t => new ContentCardDto
+            {
+                TmdbId = t.TmdbId,
+                Title = t.Title,
+                PosterUrl = t.PosterUrl ?? "",
+                MediaType = t.MediaType
+            }).ToList();
+
+            return Ok(result);
         }
+
     }
 }
     

@@ -126,24 +126,25 @@
             // 
             cmsMenu.Items.AddRange(new ToolStripItem[] { settingToolStripMenuItem, aboutToolStripMenuItem, logOutToolStripMenuItem });
             cmsMenu.Name = "cmsMenu";
-            cmsMenu.Size = new Size(118, 70);
+            cmsMenu.ShowImageMargin = false;
+            cmsMenu.Size = new Size(156, 92);
             // 
             // settingToolStripMenuItem
             // 
             settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            settingToolStripMenuItem.Size = new Size(117, 22);
+            settingToolStripMenuItem.Size = new Size(155, 22);
             settingToolStripMenuItem.Text = "Setting";
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(117, 22);
+            aboutToolStripMenuItem.Size = new Size(155, 22);
             aboutToolStripMenuItem.Text = "About";
             // 
             // logOutToolStripMenuItem
             // 
             logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            logOutToolStripMenuItem.Size = new Size(117, 22);
+            logOutToolStripMenuItem.Size = new Size(155, 22);
             logOutToolStripMenuItem.Text = "Log Out";
             // 
             // btnMenu

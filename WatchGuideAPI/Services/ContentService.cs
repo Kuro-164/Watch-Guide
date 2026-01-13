@@ -209,5 +209,21 @@ namespace WatchGuideAPI.Services
                     .ToList()
             };
         }
+
+        private static readonly Dictionary<string, int> TmdbGenreMap = new()
+        {
+            { "Action", 28 },
+            { "Adventure", 12 },
+            { "Animation", 16 },
+            { "Comedy", 35 },
+            { "Crime", 80 },
+            { "Drama", 18 },
+            { "Fantasy", 14 },
+            { "Horror", 27 },
+            { "Romance", 10749 },
+            { "Sci-Fi", 878 },
+            { "Thriller", 53 }
+        };
+
     }
 }
