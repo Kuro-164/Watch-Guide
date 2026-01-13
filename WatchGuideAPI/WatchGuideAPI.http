@@ -1,0 +1,6 @@
+@WatchGuideAPI_HostAddress = http://localhost:5191
+
+GET {{WatchGuideAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
