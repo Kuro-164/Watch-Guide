@@ -2,15 +2,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy project file and restore
+# Copy csproj and restore ONLY API project
 COPY WatchGuideAPI.csproj .
-RUN dotnet restore
+RUN dotnet restore WatchGuideAPI.csproj
 
-# Copy the rest of the source code
+# Copy remaining source
 COPY . .
 
-# Build & publish
-RUN dotnet publish -c Release -o /app/publish
+# Publish ONLY API project (NO solution)
+RUN dotnet publish WatchGuideAPI.csproj -c Release -o /app/publish
 
 # -------- RUNTIME STAGE --------
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
