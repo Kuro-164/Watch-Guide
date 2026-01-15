@@ -34,6 +34,7 @@ namespace WatchGuideAPI.DTOs
         public string? PosterUrl { get; set; }
         public string? BackdropUrl { get; set; }
         public float Rating { get; set; }
+        public string? Language { get; set; }
         public List<string> Genres { get; set; } = new();
         public List<StreamingPlatformDto> StreamingPlatforms { get; set; } = new();
         public List<CastDto> Cast { get; set; } = new();

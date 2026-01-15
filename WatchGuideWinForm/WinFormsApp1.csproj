@@ -9,6 +9,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Platforms\apple_tv.png" />
+    <None Remove="Assets\Platforms\default.png" />
+    <None Remove="Assets\Platforms\hotstar.png" />
+    <None Remove="Assets\Platforms\netflix.png" />
+    <None Remove="Assets\Platforms\Primevideo.jpg" />
+    <None Remove="Assets\Platforms\sonyliv.png" />
+    <None Remove="Assets\Platforms\youtube.png" />
+    <None Remove="Assets\Platforms\zee5.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Platforms\apple_tv.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\hotstar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Platforms\netflix.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\Primevideo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\sonyliv.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\youtube.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Platforms\zee5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

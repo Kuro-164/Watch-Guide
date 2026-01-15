@@ -40,13 +40,15 @@ namespace WatchGuideAPI.Controllers
         };
         private readonly ITMDBService _tmdbService;
         private readonly ITrendingService _trendingService; // NEW
+        private readonly IWatchmodeService _watchmodeService;
         private readonly IContentService _contentService;
         private readonly AppDbContext _context;
 
-        public ContentController(ITMDBService tmdbService, ITrendingService trendingService, IContentService contentService, AppDbContext context)
+        public ContentController(ITMDBService tmdbService, ITrendingService trendingService, IWatchmodeService watchmodeService, IContentService contentService, AppDbContext context)
         {
             _tmdbService = tmdbService;
             _trendingService = trendingService;
+            _watchmodeService = watchmodeService;
             _contentService = contentService;
             _context = context;
         }
@@ -124,8 +126,25 @@ namespace WatchGuideAPI.Controllers
         [HttpGet("{id}/details")]
         public async Task<IActionResult> GetDetails(int id, [FromQuery] string mediaType = "tv")
         {
-            var details = await _tmdbService.GetContentDetails(id, mediaType);
-            return Ok(details);
+            try
+            {
+                // Get basic details
+                var details = await _tmdbService.GetContentDetails(id, mediaType);
+
+                // Get cast/crew data
+                var cast = await _tmdbService.GetCast(id, mediaType);
+                details.Cast = cast;
+
+                // Get streaming platforms
+                var platforms = await _watchmodeService.GetStreamingSources(id, mediaType);
+                details.StreamingPlatforms = platforms;
+
+                return Ok(details);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
 
         // ✨ NEW ENDPOINT - Returns cached trending (auto-refreshes if needed)

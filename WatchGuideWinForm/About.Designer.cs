@@ -53,6 +53,7 @@
             panel6 = new Panel();
             pictureBox6 = new PictureBox();
             label9 = new Label();
+            btnBack = new Button();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -272,9 +273,12 @@
             // 
             // pictureBox5
             // 
-            pictureBox5.Location = new Point(569, 3);
+            pictureBox5.Dock = DockStyle.Fill;
+            pictureBox5.Image = Properties.Resources.Gautam;
+            pictureBox5.Location = new Point(0, 0);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(142, 188);
+            pictureBox5.Size = new Size(1202, 191);
+            pictureBox5.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox5.TabIndex = 0;
             pictureBox5.TabStop = false;
             // 
@@ -286,7 +290,7 @@
             label8.Name = "label8";
             label8.Size = new Size(976, 44);
             label8.TabIndex = 13;
-            label8.Text = "Gautam — UI/UX Designer\nDesigned the visual layout and user flow of the application, creating an OTT-inspired interface focused on usability and modern design.";
+            label8.Text = "Gautam Vishwakarma — UI/UX Designer\nDesigned the visual layout and user flow of the application, creating an OTT-inspired interface focused on usability and modern design.";
             // 
             // panel6
             // 
@@ -316,12 +320,25 @@
             label9.TabIndex = 15;
             label9.Text = "Abhishek Gupta — Testing & Debugging Engineer\nResponsible for testing the application, finding bugs, validating API responses, and ensuring the system runs smoothly without crashes or data issues.";
             // 
+            // btnBack
+            // 
+            btnBack.Font = new Font("Segoe UI Emoji", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnBack.ImageAlign = ContentAlignment.TopCenter;
+            btnBack.Location = new Point(7, 6);
+            btnBack.Name = "btnBack";
+            btnBack.Size = new Size(34, 31);
+            btnBack.TabIndex = 5;
+            btnBack.Text = "<--";
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
+            // 
             // About
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(1264, 681);
+            Controls.Add(btnBack);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -374,5 +391,6 @@
         private Panel panel6;
         private PictureBox pictureBox6;
         private Label label9;
+        private Button btnBack;
     }
 }

@@ -96,5 +96,66 @@ namespace WinFormsApp1
             search.Show();
             this.Hide();
         }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            PreferenceForm pref = new PreferenceForm();
+            pref.Owner = this;
+            pref.ShowDialog();
+
+            this.Show();
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            About about = new About();
+            about.Owner = this;   // optional but clean
+            about.ShowDialog();
+
+            this.Show();
+        }
+
+        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Session.UserId = Guid.Empty;
+
+            // Show welcome screen
+            WelcomeForm welcome = new WelcomeForm();
+            welcome.Show();
+
+            // Close current screen
+            this.Close();
+
+            if (MessageBox.Show(
+                "Are you sure you want to log out?",
+                "Confirm Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.No)
+            {
+                return;
+            }
+        }
+
+        private void btnMenu_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Menu button clicked");
+            cmsMenu.Show(btnMenu, new Point(0, btnMenu.Height));
+        }
+
+        public async Task RefreshForNewPreferencesAsync()
+        {
+            // Clear UI
+            flpTrending.Controls.Clear();
+            flpRecommended.Controls.Clear();
+
+            // Reload data
+            await LoadTrendingAsync();
+            await LoadRecommendedAsync();
+        }
     }
 }

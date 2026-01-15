@@ -35,16 +35,16 @@
             flpTrending = new FlowLayoutPanel();
             lblTrending = new Label();
             panel1 = new Panel();
-            cmsMenu = new ContextMenuStrip(components);
-            settingToolStripMenuItem = new ToolStripMenuItem();
-            aboutToolStripMenuItem = new ToolStripMenuItem();
-            logOutToolStripMenuItem = new ToolStripMenuItem();
             btnMenu = new Button();
             pnlTopBar = new Panel();
             panelContent = new Panel();
-            cmsMenu.SuspendLayout();
+            cmsMenu = new ContextMenuStrip(components);
+            settingsToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
+            logOutToolStripMenuItem = new ToolStripMenuItem();
             pnlTopBar.SuspendLayout();
             panelContent.SuspendLayout();
+            cmsMenu.SuspendLayout();
             SuspendLayout();
             // 
             // btnSearch
@@ -122,31 +122,6 @@
             panel1.Size = new Size(57, 538);
             panel1.TabIndex = 5;
             // 
-            // cmsMenu
-            // 
-            cmsMenu.Items.AddRange(new ToolStripItem[] { settingToolStripMenuItem, aboutToolStripMenuItem, logOutToolStripMenuItem });
-            cmsMenu.Name = "cmsMenu";
-            cmsMenu.ShowImageMargin = false;
-            cmsMenu.Size = new Size(156, 92);
-            // 
-            // settingToolStripMenuItem
-            // 
-            settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            settingToolStripMenuItem.Size = new Size(155, 22);
-            settingToolStripMenuItem.Text = "Setting";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(155, 22);
-            aboutToolStripMenuItem.Text = "About";
-            // 
-            // logOutToolStripMenuItem
-            // 
-            logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            logOutToolStripMenuItem.Size = new Size(155, 22);
-            logOutToolStripMenuItem.Text = "Log Out";
-            // 
             // btnMenu
             // 
             btnMenu.BackColor = Color.Transparent;
@@ -160,6 +135,7 @@
             btnMenu.TabIndex = 8;
             btnMenu.Text = "☰";
             btnMenu.UseVisualStyleBackColor = false;
+            btnMenu.Click += btnMenu_Click;
             // 
             // pnlTopBar
             // 
@@ -184,6 +160,33 @@
             panelContent.Size = new Size(1115, 583);
             panelContent.TabIndex = 10;
             // 
+            // cmsMenu
+            // 
+            cmsMenu.Items.AddRange(new ToolStripItem[] { settingsToolStripMenuItem, aboutToolStripMenuItem, logOutToolStripMenuItem });
+            cmsMenu.Name = "cmsMenu";
+            cmsMenu.Size = new Size(117, 70);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            settingsToolStripMenuItem.Size = new Size(116, 22);
+            settingsToolStripMenuItem.Text = "Settings";
+            settingsToolStripMenuItem.Click += settingsToolStripMenuItem_Click;
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(116, 22);
+            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // logOutToolStripMenuItem
+            // 
+            logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            logOutToolStripMenuItem.Size = new Size(116, 22);
+            logOutToolStripMenuItem.Text = "Log out";
+            logOutToolStripMenuItem.Click += logOutToolStripMenuItem_Click;
+            // 
             // HomeScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -199,9 +202,9 @@
             Name = "HomeScreen";
             Text = "HomeScreen";
             Load += HomeScreen_Load;
-            cmsMenu.ResumeLayout(false);
             pnlTopBar.ResumeLayout(false);
             panelContent.ResumeLayout(false);
+            cmsMenu.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -214,13 +217,13 @@
         private System.Windows.Forms.Label lblTrending;
         private System.Windows.Forms.Panel panel1;
         private ContextMenuStrip contextMenuStrip1;
-        private ContextMenuStrip cmsMenu;
-        private ToolStripMenuItem settingToolStripMenuItem;
-        private ToolStripMenuItem aboutToolStripMenuItem;
-        private ToolStripMenuItem logOutToolStripMenuItem;
         private Button btnMenu;
         private Panel pnlTopBar;
         private Panel panelContent;
+        private ContextMenuStrip cmsMenu;
+        private ToolStripMenuItem settingsToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem logOutToolStripMenuItem;
     }
 }
 

@@ -32,7 +32,7 @@ namespace WatchGuideAPI.Services
         {
             try
             {
-                string url = $"{_baseUrl}/search/multi?api_key={_apiKey}&query={Uri.EscapeDataString(query)}&language=en-US";
+                string url = $"{_baseUrl}/search/multi?api_key={_apiKey}&query={Uri.EscapeDataString(query)}";
 
                 Console.WriteLine($"Calling TMDB: {url}");
 
@@ -89,6 +89,9 @@ namespace WatchGuideAPI.Services
                         : root.GetProperty("name").GetString(),
                     Type = mediaType,
                     Description = root.GetProperty("overview").GetString(),
+                    Language = root.TryGetProperty("original_language", out var lang)
+                        ? lang.GetString()
+                        : null,
                     PosterUrl = root.TryGetProperty("poster_path", out var poster) && !poster.ValueKind.Equals(JsonValueKind.Null)
                         ? $"https://image.tmdb.org/t/p/w500{poster.GetString()}"
                         : null,
@@ -104,11 +107,6 @@ namespace WatchGuideAPI.Services
                             .ToList()
                         : new List<string>()
                 };
-
-                details.StreamingPlatforms = await _watchmodeService.GetStreamingSources(tmdbId, mediaType);
-                details.Cast = await GetCast(tmdbId, mediaType);
-
-
                 return details;
             }
             catch (Exception ex)

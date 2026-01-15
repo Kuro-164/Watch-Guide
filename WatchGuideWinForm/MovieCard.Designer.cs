@@ -58,6 +58,7 @@
             picPoster.SizeMode = PictureBoxSizeMode.Zoom;
             picPoster.TabIndex = 3;
             picPoster.TabStop = false;
+            picPoster.Click += MovieCard_Click;
             // 
             // MovieCard
             // 

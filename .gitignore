@@ -18,3 +18,8 @@
 # OS files
 Thumbs.db
 .DS_Store
+
+# Visual Studio publish & project user files
+*.csproj.user
+*.pubxml.user
+Properties/PublishProfiles/

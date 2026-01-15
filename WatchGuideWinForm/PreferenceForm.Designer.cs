@@ -145,6 +145,7 @@ namespace WinFormsApp1
             chkScifi.Text = "Sci-fic";
             chkScifi.TextAlign = ContentAlignment.MiddleCenter;
             chkScifi.UseVisualStyleBackColor = false;
+            chkScifi.CheckedChanged += chkScifi_CheckedChanged;
             // 
             // chkFantasy
             // 
@@ -162,6 +163,7 @@ namespace WinFormsApp1
             chkFantasy.Text = "Fantasy";
             chkFantasy.TextAlign = ContentAlignment.MiddleCenter;
             chkFantasy.UseVisualStyleBackColor = false;
+            chkFantasy.CheckedChanged += chkFantasy_CheckedChanged;
             // 
             // chkMystery
             // 
@@ -179,6 +181,7 @@ namespace WinFormsApp1
             chkMystery.Text = "Mystery";
             chkMystery.TextAlign = ContentAlignment.MiddleCenter;
             chkMystery.UseVisualStyleBackColor = false;
+            chkMystery.CheckedChanged += chkMystery_CheckedChanged;
             // 
             // chkHorror
             // 
@@ -196,6 +199,7 @@ namespace WinFormsApp1
             chkHorror.Text = "Horror";
             chkHorror.TextAlign = ContentAlignment.MiddleCenter;
             chkHorror.UseVisualStyleBackColor = false;
+            chkHorror.CheckedChanged += chkHorror_CheckedChanged;
             // 
             // chkRomance
             // 
@@ -231,6 +235,7 @@ namespace WinFormsApp1
             chkThriller.Text = "Thriller";
             chkThriller.TextAlign = ContentAlignment.MiddleCenter;
             chkThriller.UseVisualStyleBackColor = false;
+            chkThriller.CheckedChanged += chkThriller_CheckedChanged;
             // 
             // chkCrime
             // 
@@ -248,6 +253,7 @@ namespace WinFormsApp1
             chkCrime.Text = "Crime";
             chkCrime.TextAlign = ContentAlignment.MiddleCenter;
             chkCrime.UseVisualStyleBackColor = false;
+            chkCrime.CheckedChanged += chkCrime_CheckedChanged;
             // 
             // chkDrama
             // 
@@ -265,6 +271,7 @@ namespace WinFormsApp1
             chkDrama.Text = "Drama";
             chkDrama.TextAlign = ContentAlignment.MiddleCenter;
             chkDrama.UseVisualStyleBackColor = false;
+            chkDrama.CheckedChanged += chkDrama_CheckedChanged;
             // 
             // chkComedy
             // 
@@ -282,6 +289,7 @@ namespace WinFormsApp1
             chkComedy.Text = "Comedy";
             chkComedy.TextAlign = ContentAlignment.MiddleCenter;
             chkComedy.UseVisualStyleBackColor = false;
+            chkComedy.CheckedChanged += chkComedy_CheckedChanged;
             // 
             // chkAction
             // 
@@ -299,6 +307,7 @@ namespace WinFormsApp1
             chkAction.Text = "Action";
             chkAction.TextAlign = ContentAlignment.MiddleCenter;
             chkAction.UseVisualStyleBackColor = false;
+            chkAction.CheckedChanged += chkAction_CheckedChanged;
             // 
             // chkEnglish
             // 
@@ -316,6 +325,7 @@ namespace WinFormsApp1
             chkEnglish.Text = "English";
             chkEnglish.TextAlign = ContentAlignment.MiddleCenter;
             chkEnglish.UseVisualStyleBackColor = false;
+            chkEnglish.CheckedChanged += chkEnglish_CheckedChanged;
             // 
             // chkHindi
             // 
@@ -333,6 +343,7 @@ namespace WinFormsApp1
             chkHindi.Text = "Hindi";
             chkHindi.TextAlign = ContentAlignment.MiddleCenter;
             chkHindi.UseVisualStyleBackColor = false;
+            chkHindi.CheckedChanged += chkHindi_CheckedChanged;
             // 
             // chkMarathi
             // 
@@ -350,6 +361,7 @@ namespace WinFormsApp1
             chkMarathi.Text = "Marathi";
             chkMarathi.TextAlign = ContentAlignment.MiddleCenter;
             chkMarathi.UseVisualStyleBackColor = false;
+            chkMarathi.CheckedChanged += chkMarathi_CheckedChanged;
             // 
             // chkTamil
             // 
@@ -367,7 +379,7 @@ namespace WinFormsApp1
             chkTamil.Text = "Tamil";
             chkTamil.TextAlign = ContentAlignment.MiddleCenter;
             chkTamil.UseVisualStyleBackColor = false;
-            chkTamil.CheckedChanged += checkBox3_CheckedChanged;
+            chkTamil.CheckedChanged += chkTamil_CheckedChanged;
             // 
             // chkGujrati
             // 
@@ -385,6 +397,7 @@ namespace WinFormsApp1
             chkGujrati.Text = "Gujrati";
             chkGujrati.TextAlign = ContentAlignment.MiddleCenter;
             chkGujrati.UseVisualStyleBackColor = false;
+            chkGujrati.CheckedChanged += chkGujrati_CheckedChanged;
             // 
             // panel2
             // 
@@ -442,7 +455,7 @@ namespace WinFormsApp1
             Name = "PreferenceForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Form4";
-            Load += Form4_Load;
+            Load += PreferenceForm_Load;
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

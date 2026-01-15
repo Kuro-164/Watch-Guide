@@ -49,5 +49,10 @@ namespace WinFormsApp1
 
             flowLayoutPanel1.PerformLayout();
         }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

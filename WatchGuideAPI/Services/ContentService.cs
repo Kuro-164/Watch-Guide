@@ -47,6 +47,8 @@ namespace WatchGuideAPI.Services
 
             // 2️⃣ Fetch from TMDB
             var tmdbDetails = await _tmdbService.GetContentDetails(tmdbId, mediaType);
+            var tmdbCast = await _tmdbService.GetCast(tmdbId, mediaType);
+            var streamingPlatforms = await _watchmodeService.GetStreamingSources(tmdbId, mediaType);
 
             // 3️⃣ Check if content exists (expired cache)
             content = await _context.Content
@@ -75,6 +77,23 @@ namespace WatchGuideAPI.Services
 
                 _context.Content.Add(content);
                 await _context.SaveChangesAsync();
+
+                // 🔥 UPDATE CAST (clear + insert)
+                _context.ContentCast.RemoveRange(
+                    _context.ContentCast.Where(c => c.ContentId == content.ContentId)
+                );
+
+                foreach (var cast in tmdbCast)
+                {
+                    _context.ContentCast.Add(new ContentCast
+                    {
+                        ContentId = content.ContentId,
+                        ActorName = cast.Name,
+                        CharacterName = cast.Character,
+                        ProfileUrl = cast.Photo,
+                        CastOrder = null
+                    });
+                }
             }
             else
             {
@@ -196,6 +215,18 @@ namespace WatchGuideAPI.Services
                 Genres = content.ContentGenres?
                     .Select(g => g.Genre)
                     .ToList() ?? new List<string>(),
+
+                // Add Cast data
+                Cast = _context.ContentCast
+                    .Where(c => c.ContentId == content.ContentId)
+                    .OrderBy(c => c.CastOrder ?? int.MaxValue)
+                    .Select(c => new CastDto
+                    {
+                        Name = c.ActorName,
+                        Character = c.CharacterName,
+                        Photo = c.ProfileUrl
+                    })
+                    .ToList(),
 
                 StreamingPlatforms = _context.ContentPlatforms
                     .Where(p => p.ContentId == content.ContentId)
