@@ -66,10 +66,10 @@
             flpRecommended.AutoScroll = true;
             flpRecommended.BackColor = Color.Transparent;
             flpRecommended.Dock = DockStyle.Top;
-            flpRecommended.Location = new Point(0, 300);
+            flpRecommended.Location = new Point(0, 329);
             flpRecommended.Margin = new Padding(4, 3, 4, 3);
             flpRecommended.Name = "flpRecommended";
-            flpRecommended.Size = new Size(1115, 230);
+            flpRecommended.Size = new Size(1115, 274);
             flpRecommended.TabIndex = 4;
             flpRecommended.WrapContents = false;
             // 
@@ -79,7 +79,7 @@
             lblRecommended.Dock = DockStyle.Top;
             lblRecommended.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblRecommended.ForeColor = SystemColors.Control;
-            lblRecommended.Location = new Point(0, 265);
+            lblRecommended.Location = new Point(0, 294);
             lblRecommended.Margin = new Padding(4, 0, 4, 0);
             lblRecommended.Name = "lblRecommended";
             lblRecommended.Size = new Size(1115, 35);
@@ -95,7 +95,7 @@
             flpTrending.Location = new Point(0, 35);
             flpTrending.Margin = new Padding(4, 3, 4, 3);
             flpTrending.Name = "flpTrending";
-            flpTrending.Size = new Size(1115, 230);
+            flpTrending.Size = new Size(1115, 259);
             flpTrending.TabIndex = 2;
             flpTrending.WrapContents = false;
             // 

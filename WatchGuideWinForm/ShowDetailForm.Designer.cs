@@ -68,7 +68,7 @@
             pnlRoot.Dock = DockStyle.Fill;
             pnlRoot.Location = new Point(0, 0);
             pnlRoot.Name = "pnlRoot";
-            pnlRoot.Size = new Size(1264, 681);
+            pnlRoot.Size = new Size(1264, 746);
             pnlRoot.TabIndex = 0;
             // 
             // panel1
@@ -80,7 +80,7 @@
             panel1.Location = new Point(0, 527);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12);
-            panel1.Size = new Size(1247, 184);
+            panel1.Size = new Size(1247, 255);
             panel1.TabIndex = 4;
             // 
             // flpCrew
@@ -90,7 +90,7 @@
             flpCrew.Location = new Point(12, 32);
             flpCrew.Margin = new Padding(0, 8, 0, 0);
             flpCrew.Name = "flpCrew";
-            flpCrew.Size = new Size(1223, 140);
+            flpCrew.Size = new Size(1223, 211);
             flpCrew.TabIndex = 1;
             flpCrew.WrapContents = false;
             // 
@@ -284,7 +284,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
-            ClientSize = new Size(1264, 681);
+            ClientSize = new Size(1264, 746);
             Controls.Add(pnlRoot);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MinimumSize = new Size(1280, 720);
