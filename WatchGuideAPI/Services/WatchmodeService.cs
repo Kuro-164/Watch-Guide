@@ -3,7 +3,7 @@ using WatchGuideAPI.DTOs;
 
 namespace WatchGuideAPI.Services
 {
-
+    // Handles communication with Watchmode API
     public class WatchmodeService : IWatchmodeService
     {
         private readonly HttpClient _httpClient;
@@ -22,10 +22,12 @@ namespace WatchGuideAPI.Services
             _logger = logger;
         }
 
+        // Returns streaming platforms for a given TMDB movie or TV show
         public async Task<List<StreamingPlatformDto>> GetStreamingSources(int tmdbId, string mediaType)
         {
             try
             {
+                // Convert TMDB ID to Watchmode ID
                 var watchmodeId = await GetWatchmodeId(tmdbId, mediaType);
 
                 if (watchmodeId == null)
@@ -34,6 +36,7 @@ namespace WatchGuideAPI.Services
                     return new List<StreamingPlatformDto>();
                 }
 
+                // Fetch streaming sources for the Watchmode title (India region)
                 var url = $"{_baseUrl}/title/{watchmodeId}/sources/?apiKey={_apiKey}&regions=IN";
 
                 var response = await _httpClient.GetAsync(url);
@@ -42,6 +45,7 @@ namespace WatchGuideAPI.Services
 
                 var content = await response.Content.ReadAsStringAsync();
 
+                // Deserialize Watchmode source list
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
@@ -50,6 +54,7 @@ namespace WatchGuideAPI.Services
 
                 var sources = JsonSerializer.Deserialize<List<WatchmodeSource>>(content, options);
 
+                // Group by platform name and map to clean DTO
                 return sources?
                     .Where(s => !string.IsNullOrEmpty(s.Name))
                     .GroupBy(s => s.Name)
@@ -69,12 +74,17 @@ namespace WatchGuideAPI.Services
             }
         }
 
+        // Finds Watchmode ID using TMDB ID
         private async Task<int?> GetWatchmodeId(int tmdbId, string mediaType)
         {
             try
             {
-                var searchField = mediaType == "movie" ? "tmdb_movie_id" : "tmdb_tv_id";
-                var url = $"{_baseUrl}/search/?"+$"apiKey={_apiKey}&"+$"search_field={searchField}&" +$"search_value={tmdbId}";
+                // Decide search field based on content type
+                var searchField = mediaType == "movie"
+                    ? "tmdb_movie_id"
+                    : "tmdb_tv_id";
+
+                var url = $"{_baseUrl}/search/?apiKey={_apiKey}&search_field={searchField}&search_value={tmdbId}";
 
                 var response = await _httpClient.GetAsync(url);
                 if (!response.IsSuccessStatusCode)
@@ -89,6 +99,8 @@ namespace WatchGuideAPI.Services
                 };
 
                 var searchResult = JsonSerializer.Deserialize<WatchmodeSearchResponse>(content, options);
+
+                // Return first matched Watchmode title ID
                 return searchResult?.TitleResults?.FirstOrDefault()?.Id;
             }
             catch
@@ -97,6 +109,7 @@ namespace WatchGuideAPI.Services
             }
         }
 
+        // Converts Watchmode source type to readable format
         private string FormatType(string type) =>
             type?.ToLower() switch
             {
@@ -106,7 +119,5 @@ namespace WatchGuideAPI.Services
                 "buy" => "Buy",
                 _ => type ?? "Other"
             };
-
-        
     }
 }

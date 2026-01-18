@@ -19,46 +19,26 @@ namespace WatchGuideAPI.Controllers
             _context = context;
         }
 
+        // ================= REGISTER =================
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            try
-            {
-                var response = await _authService.Register(request);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var response = await _authService.Register(request);
+            return Ok(response);
         }
 
+        // ================= LOGIN =================
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            try
-            {
-                var response = await _authService.Login(request);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
+            var response = await _authService.Login(request);
+            return Ok(response);
         }
 
+        // ================= FORGOT PASSWORD =================
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
-        {  // 🔍 DEBUG START (TEMPORARY)
-            var users = await _context.Users.ToListAsync();
-            Console.WriteLine($"USERS FOUND: {users.Count}");
-
-            foreach (var u in users)
-            {
-                Console.WriteLine($"DB USERNAME: [{u.Username}]");
-            }
-            // 🔍 DEBUG END
-
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+        {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == request.Username);
 
@@ -68,8 +48,9 @@ namespace WatchGuideAPI.Controllers
             return Ok(new { message = "User verified" });
         }
 
+        // ================= RESET PASSWORD =================
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == request.Username);
@@ -78,7 +59,6 @@ namespace WatchGuideAPI.Controllers
                 return NotFound(new { message = "User not found" });
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Password reset successful" });

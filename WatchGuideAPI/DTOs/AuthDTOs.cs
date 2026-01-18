@@ -2,17 +2,17 @@
 
 namespace WatchGuideAPI.DTOs
 {
+    // ================= REQUEST DTOs =================
+
     public class RegisterRequest
     {
         [Required]
         public string Username { get; set; } = string.Empty;
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty ;
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(6)]
+        [Required, MinLength(6)]
         public string Password { get; set; } = string.Empty;
     }
 
@@ -23,14 +23,6 @@ namespace WatchGuideAPI.DTOs
 
         [Required]
         public string Password { get; set; } = string.Empty;
-    }
-
-    public class AuthResponse
-    {
-        public Guid UserId { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
     }
 
     public class ForgotPasswordRequest
@@ -44,8 +36,17 @@ namespace WatchGuideAPI.DTOs
         [Required]
         public string Username { get; set; } = string.Empty;
 
-        [Required]
-        [MinLength(6)]
+        [Required, MinLength(6)]
         public string NewPassword { get; set; } = string.Empty;
+    }
+
+    // ================= RESPONSE DTOs =================
+
+    public class AuthResponse
+    {
+        public Guid UserId { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }
