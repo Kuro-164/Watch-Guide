@@ -29,13 +29,13 @@ namespace WinFormsApp1
 
             txtPassword.Text = "Enter Password";
             txtPassword.ForeColor = Color.Gray;
-            txtPassword.UseSystemPasswordChar = false;
+            txtPassword.UseSystemPasswordChar = true;
         }
 
         private async void signup_btn_Click(object sender, EventArgs e)
         { 
             if (txtUsername.Text == "Enter Username" ||
-                txtEmail.Text == "Enter Email" ||
+                txtEmail.Text == "Enter Your Email" ||
                 txtPassword.Text == "Enter Password")
             {
                 MessageBox.Show("Please fill all fields");
@@ -86,7 +86,6 @@ namespace WinFormsApp1
                 );
                 // store new user UUID globally
                 Session.UserId = auth.UserId;
-                MessageBox.Show("New user UUID: " + Session.UserId);
 
 
                 MessageBox.Show("Signup successful");

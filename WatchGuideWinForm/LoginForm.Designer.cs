@@ -162,11 +162,12 @@ namespace WinFormsApp1
             txtPassword.ForeColor = Color.Gray;
             txtPassword.Location = new Point(663, 350);
             txtPassword.Margin = new Padding(2);
-            txtPassword.Multiline = true;
+            txtPassword.Multiline = false;
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(209, 23);
             txtPassword.TabIndex = 14;
             txtPassword.Text = "Enter Password";
+            txtPassword.UseSystemPasswordChar = false;
             txtPassword.Enter += txtPassword_Enter;
             txtPassword.Leave += txtPassword_Leave;
             // 

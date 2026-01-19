@@ -122,14 +122,6 @@ namespace WinFormsApp1
 
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Session.UserId = Guid.Empty;
-
-            // Show welcome screen
-            WelcomeForm welcome = new WelcomeForm();
-            welcome.Show();
-
-            // Close current screen
-            this.Close();
 
             if (MessageBox.Show(
                 "Are you sure you want to log out?",
@@ -139,11 +131,19 @@ namespace WinFormsApp1
             {
                 return;
             }
+
+            Session.UserId = Guid.Empty;
+
+            // Show welcome screen
+            WelcomeForm welcome = new WelcomeForm();
+            welcome.Show();
+
+            // Close current screen
+            this.Close();
         }
 
         private void btnMenu_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Menu button clicked");
             cmsMenu.Show(btnMenu, new Point(0, btnMenu.Height));
         }
 

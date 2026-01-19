@@ -23,7 +23,6 @@ namespace WinFormsApp1
 
         private async void save_btn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Saving for user: " + Session.UserId);
 
             // NEW selections (current UI state)
             var newLanguages = selectedLanguages.ToList();
