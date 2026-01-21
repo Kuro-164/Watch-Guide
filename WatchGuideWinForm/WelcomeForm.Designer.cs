@@ -45,10 +45,10 @@
             proj_tit_lbl.Location = new Point(469, 251);
             proj_tit_lbl.Margin = new Padding(2, 0, 2, 0);
             proj_tit_lbl.Name = "proj_tit_lbl";
-            proj_tit_lbl.Size = new Size(307, 62);
+            proj_tit_lbl.Size = new Size(338, 62);
             proj_tit_lbl.TabIndex = 27;
             proj_tit_lbl.Tag = "";
-            proj_tit_lbl.Text = "Watch Guide";
+            proj_tit_lbl.Text = "OTT TRACKER";
             // 
             // btnLogin
             // 
