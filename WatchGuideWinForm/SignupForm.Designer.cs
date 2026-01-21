@@ -220,7 +220,7 @@
             MinimumSize = new Size(1280, 720);
             Name = "SignupForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Form2";
+            Text = "SignUp";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -51,7 +51,7 @@ namespace WinFormsApp1
             login_lbl.BackColor = SystemColors.ActiveCaptionText;
             login_lbl.Font = new Font("Segoe UI", 25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             login_lbl.ForeColor = SystemColors.ActiveCaption;
-            login_lbl.Location = new Point(625, 237);
+            login_lbl.Location = new Point(600, 203);
             login_lbl.Margin = new Padding(2, 0, 2, 0);
             login_lbl.Name = "login_lbl";
             login_lbl.Size = new Size(110, 46);
@@ -65,7 +65,7 @@ namespace WinFormsApp1
             cancel_btn.FlatStyle = FlatStyle.Flat;
             cancel_btn.Font = new Font("Segoe UI", 11F);
             cancel_btn.ForeColor = SystemColors.ActiveCaptionText;
-            cancel_btn.Location = new Point(675, 443);
+            cancel_btn.Location = new Point(650, 409);
             cancel_btn.Margin = new Padding(2);
             cancel_btn.Name = "cancel_btn";
             cancel_btn.RightToLeft = RightToLeft.No;
@@ -83,7 +83,7 @@ namespace WinFormsApp1
             btnForgotPassword.FlatStyle = FlatStyle.Flat;
             btnForgotPassword.Font = new Font("Segoe UI", 7F);
             btnForgotPassword.ForeColor = SystemColors.ActiveCaptionText;
-            btnForgotPassword.Location = new Point(663, 387);
+            btnForgotPassword.Location = new Point(638, 353);
             btnForgotPassword.Margin = new Padding(2);
             btnForgotPassword.Name = "btnForgotPassword";
             btnForgotPassword.RightToLeft = RightToLeft.No;
@@ -101,7 +101,7 @@ namespace WinFormsApp1
             login_btn.FlatStyle = FlatStyle.Flat;
             login_btn.Font = new Font("Segoe UI", 11F);
             login_btn.ForeColor = SystemColors.ActiveCaptionText;
-            login_btn.Location = new Point(538, 443);
+            login_btn.Location = new Point(513, 409);
             login_btn.Margin = new Padding(2);
             login_btn.Name = "login_btn";
             login_btn.Size = new Size(78, 28);
@@ -116,7 +116,7 @@ namespace WinFormsApp1
             username_lbl.BackColor = SystemColors.ActiveCaptionText;
             username_lbl.Font = new Font("Segoe UI", 13F);
             username_lbl.ForeColor = SystemColors.ActiveCaption;
-            username_lbl.Location = new Point(502, 303);
+            username_lbl.Location = new Point(477, 269);
             username_lbl.Margin = new Padding(2, 0, 2, 0);
             username_lbl.Name = "username_lbl";
             username_lbl.Size = new Size(91, 25);
@@ -130,7 +130,7 @@ namespace WinFormsApp1
             password_lbl.FlatStyle = FlatStyle.System;
             password_lbl.Font = new Font("Segoe UI", 13F);
             password_lbl.ForeColor = SystemColors.ActiveCaption;
-            password_lbl.Location = new Point(502, 351);
+            password_lbl.Location = new Point(477, 317);
             password_lbl.Margin = new Padding(2, 0, 2, 0);
             password_lbl.Name = "password_lbl";
             password_lbl.Size = new Size(92, 22);
@@ -144,7 +144,7 @@ namespace WinFormsApp1
             txtUsername.BorderStyle = BorderStyle.None;
             txtUsername.Font = new Font("Segoe UI", 11F);
             txtUsername.ForeColor = Color.Gray;
-            txtUsername.Location = new Point(663, 302);
+            txtUsername.Location = new Point(638, 268);
             txtUsername.Margin = new Padding(2);
             txtUsername.Multiline = true;
             txtUsername.Name = "txtUsername";
@@ -160,14 +160,12 @@ namespace WinFormsApp1
             txtPassword.BorderStyle = BorderStyle.None;
             txtPassword.Font = new Font("Segoe UI", 11F);
             txtPassword.ForeColor = Color.Gray;
-            txtPassword.Location = new Point(663, 350);
+            txtPassword.Location = new Point(638, 316);
             txtPassword.Margin = new Padding(2);
-            txtPassword.Multiline = false;
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(209, 23);
+            txtPassword.Size = new Size(209, 20);
             txtPassword.TabIndex = 14;
             txtPassword.Text = "Enter Password";
-            txtPassword.UseSystemPasswordChar = false;
             txtPassword.Enter += txtPassword_Enter;
             txtPassword.Leave += txtPassword_Leave;
             // 
@@ -180,7 +178,7 @@ namespace WinFormsApp1
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(1280, 720);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 18;
+            pictureBox1.TabIndex = 20;
             pictureBox1.TabStop = false;
             // 
             // LoginForm
@@ -201,7 +199,7 @@ namespace WinFormsApp1
             Margin = new Padding(2);
             MinimumSize = new Size(1280, 720);
             Name = "LoginForm";
-            Text = "Form3";
+            Text = "Login";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

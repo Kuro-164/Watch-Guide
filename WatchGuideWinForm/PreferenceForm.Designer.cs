@@ -454,7 +454,7 @@ namespace WinFormsApp1
             MinimumSize = new Size(1280, 720);
             Name = "PreferenceForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Form4";
+            Text = "Preference";
             Load += PreferenceForm_Load;
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -462,8 +462,6 @@ namespace WinFormsApp1
         }
 
         #endregion
-        private Panel panel1;
-        private CheckBox checkBox5;
         private CheckBox chkGujrati;
         private CheckBox chkTamil;
         private CheckBox chkMarathi;

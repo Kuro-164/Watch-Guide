@@ -39,16 +39,16 @@
             // 
             proj_tit_lbl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             proj_tit_lbl.AutoSize = true;
-            proj_tit_lbl.BackColor = Color.FromArgb(180, 0, 0, 0);
+            proj_tit_lbl.BackColor = Color.Black;
             proj_tit_lbl.Font = new Font("Segoe UI", 35F, FontStyle.Bold);
             proj_tit_lbl.ForeColor = SystemColors.InactiveCaption;
             proj_tit_lbl.Location = new Point(469, 251);
             proj_tit_lbl.Margin = new Padding(2, 0, 2, 0);
             proj_tit_lbl.Name = "proj_tit_lbl";
-            proj_tit_lbl.Size = new Size(338, 62);
+            proj_tit_lbl.Size = new Size(307, 62);
             proj_tit_lbl.TabIndex = 27;
             proj_tit_lbl.Tag = "";
-            proj_tit_lbl.Text = "OTT TRACKER";
+            proj_tit_lbl.Text = "Watch Guide";
             // 
             // btnLogin
             // 
@@ -58,7 +58,7 @@
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLogin.ForeColor = SystemColors.ActiveCaptionText;
-            btnLogin.Location = new Point(563, 353);
+            btnLogin.Location = new Point(554, 349);
             btnLogin.Margin = new Padding(2);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(126, 36);
@@ -75,7 +75,7 @@
             signup_btn.FlatStyle = FlatStyle.Flat;
             signup_btn.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             signup_btn.ForeColor = SystemColors.ActiveCaptionText;
-            signup_btn.Location = new Point(563, 409);
+            signup_btn.Location = new Point(554, 409);
             signup_btn.Margin = new Padding(2);
             signup_btn.Name = "signup_btn";
             signup_btn.Size = new Size(126, 36);
@@ -112,7 +112,7 @@
             MinimumSize = new Size(1280, 720);
             Name = "WelcomeForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Form1";
+            Text = "WelcomeScreen";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

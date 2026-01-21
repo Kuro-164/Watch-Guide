@@ -96,12 +96,11 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Symbol", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = SystemColors.ActiveCaption;
-            label3.Location = new Point(12, 272);
+            label3.Location = new Point(7, 258);
             label3.Name = "label3";
             label3.Size = new Size(98, 25);
             label3.TabIndex = 0;
             label3.Text = "Members";
-            label3.Click += label3_Click;
             // 
             // button1
             // 
@@ -140,9 +139,9 @@
             flowLayoutPanel1.Controls.Add(label9);
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.ForeColor = SystemColors.ActiveCaption;
-            flowLayoutPanel1.Location = new Point(10, 300);
+            flowLayoutPanel1.Location = new Point(12, 286);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1219, 376);
+            flowLayoutPanel1.Size = new Size(1225, 411);
             flowLayoutPanel1.TabIndex = 4;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -337,7 +336,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
-            ClientSize = new Size(1264, 681);
+            ClientSize = new Size(1264, 742);
             Controls.Add(btnBack);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(button2);

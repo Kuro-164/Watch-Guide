@@ -4,39 +4,31 @@ using WatchGuideAPI.DTOs;
 
 namespace WatchGuideAPI.Services
 {
-    // Contract for trending content operations
     public interface ITrendingService
     {
         Task<List<TrendingCache>> GetTrendingContent();
     }
 
-    // Handles trending cache logic using PostgreSQL + TMDB
     public class TrendingService : ITrendingService
     {
         private readonly string _connectionString;
         private readonly ITMDBService _tmdbService;
         private readonly ILogger<TrendingService> _logger;
 
-        public TrendingService(
-            IConfiguration configuration,
-            ITMDBService tmdbService,
-            ILogger<TrendingService> logger)
+        public TrendingService(IConfiguration configuration, ITMDBService tmdbService, ILogger<TrendingService> logger)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
             _tmdbService = tmdbService;
             _logger = logger;
         }
 
-        // Returns trending content from cache or refreshes it if expired
         public async Task<List<TrendingCache>> GetTrendingContent()
         {
             await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
-            // Read cached trending data
             var cachedData = await GetCachedTrending(conn);
 
-            // If cache exists and is still valid, return it
             if (cachedData.Any() && cachedData.First().ExpiresAt > DateTime.UtcNow)
             {
                 _logger.LogInformation($"Returning {cachedData.Count} trending items from cache");
@@ -45,23 +37,18 @@ namespace WatchGuideAPI.Services
 
             _logger.LogInformation("Cache expired or empty. Fetching fresh trending data from TMDB...");
 
-            // Fetch fresh trending data from TMDB
             var freshData = await _tmdbService.GetWeeklyTrending();
 
-            // Fallback to old cache if TMDB returns nothing
             if (!freshData.Any())
             {
                 _logger.LogWarning("TMDB returned no trending data");
                 return cachedData;
             }
 
-            // Replace cache with fresh data
             await RefreshCache(conn, freshData);
-
             return await GetCachedTrending(conn);
         }
 
-        // Reads trending cache directly from PostgreSQL
         private async Task<List<TrendingCache>> GetCachedTrending(NpgsqlConnection conn)
         {
             var sql = @"
@@ -77,7 +64,6 @@ namespace WatchGuideAPI.Services
 
             var results = new List<TrendingCache>();
 
-            // Map SQL rows to TrendingCache model
             while (await reader.ReadAsync())
             {
                 results.Add(new TrendingCache
@@ -102,19 +88,14 @@ namespace WatchGuideAPI.Services
             return results;
         }
 
-        // Clears old cache and inserts fresh trending data
         private async Task RefreshCache(NpgsqlConnection conn, List<TMDBSearchResult> freshData)
         {
             await using var transaction = await conn.BeginTransactionAsync();
 
             try
             {
-                // Remove existing cache
-                var deleteSql = "DELETE FROM trending_cache";
-                await using (var deleteCmd = new NpgsqlCommand(deleteSql, conn, transaction))
-                {
+                await using (var deleteCmd = new NpgsqlCommand("DELETE FROM trending_cache", conn, transaction))
                     await deleteCmd.ExecuteNonQueryAsync();
-                }
 
                 var insertSql = @"
                     INSERT INTO trending_cache 
@@ -127,44 +108,31 @@ namespace WatchGuideAPI.Services
                 var expiresAt = DateTime.UtcNow.AddDays(7);
                 int rank = 1;
 
-                // Insert top 20 trending items
                 foreach (var item in freshData.Take(20))
                 {
                     await using var insertCmd = new NpgsqlCommand(insertSql, conn, transaction);
 
-                    // TV uses Name, movie uses Title
                     string title = item.MediaType == "tv" ? item.Name : item.Title;
-
-                    // Build TMDB image URLs
                     string? posterUrl = !string.IsNullOrEmpty(item.PosterPath)
                         ? $"https://image.tmdb.org/t/p/w500{item.PosterPath}"
                         : null;
-
                     string? backdropUrl = !string.IsNullOrEmpty(item.BackdropPath)
                         ? $"https://image.tmdb.org/t/p/original{item.BackdropPath}"
                         : null;
 
-                    // Parse release / first air date
                     DateTime? releaseDate = null;
                     var rawDate = item.MediaType == "tv" ? item.FirstAirDate : item.ReleaseDate;
-
-                    if (!string.IsNullOrWhiteSpace(rawDate) &&
-                        DateTime.TryParse(rawDate, out var parsedDate))
-                    {
+                    if (!string.IsNullOrWhiteSpace(rawDate) && DateTime.TryParse(rawDate, out var parsedDate))
                         releaseDate = parsedDate;
-                    }
 
-                    // Bind parameters
                     insertCmd.Parameters.AddWithValue("tmdbId", item.Id);
                     insertCmd.Parameters.AddWithValue("title", title ?? "Unknown");
                     insertCmd.Parameters.AddWithValue("mediaType", item.MediaType ?? "tv");
                     insertCmd.Parameters.AddWithValue("posterUrl", (object?)posterUrl ?? DBNull.Value);
                     insertCmd.Parameters.AddWithValue("backdropUrl", (object?)backdropUrl ?? DBNull.Value);
-                    insertCmd.Parameters.AddWithValue("rating",
-                        item.VoteAverage.HasValue ? (object)(decimal)item.VoteAverage.Value : DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("rating", item.VoteAverage.HasValue ? (object)(decimal)item.VoteAverage.Value : DBNull.Value);
                     insertCmd.Parameters.AddWithValue("overview", (object?)item.Overview ?? DBNull.Value);
-                    insertCmd.Parameters.AddWithValue("releaseDate",
-                        releaseDate.HasValue ? (object)releaseDate.Value : DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("releaseDate", releaseDate.HasValue ? (object)releaseDate.Value : DBNull.Value);
                     insertCmd.Parameters.AddWithValue("genreIds", item.GenreIds?.ToArray() ?? Array.Empty<int>());
                     insertCmd.Parameters.AddWithValue("language", item.OriginalLanguage ?? (object)DBNull.Value);
                     insertCmd.Parameters.AddWithValue("rank", rank++);
