@@ -1,65 +1,106 @@
-🎬 WatchGuide
+# 🎬 WatchGuide
 
-WatchGuide is a C# desktop application built using WinForms with a .NET Web API backend that helps users discover movies and TV shows, view detailed information, and get personalized recommendations based on their preferences.
+WatchGuide is a **full-stack desktop application** built using **C# WinForms** and a **.NET Web API backend**.
+It helps users discover movies and TV shows, view detailed information, and get personalized recommendations based on their preferences.
 
-🚀 Features
+---
 
-🔥 Trending movies & TV shows
+## 🚀 Features
 
-🎯 Personalized recommendations (based on genres & languages)
+* 🔥 Trending movies & TV shows
+* 🎯 Personalized recommendations (based on genres & languages)
+* 🔍 Smart search with similar content suggestions
+* 📄 Detailed show page (poster, rating, genres, description, cast)
+* 📺 OTT platform availability with **FREE / RENT / SUB** badges
+* ⚙️ User preference saving & loading
 
-🔍 Search with similar content suggestions
+---
 
-📄 Detailed show page (poster, rating, genres, description, cast)
+## 🏗️ Architecture
 
-📺 OTT platform availability with FREE / RENT / SUB badges
+This project follows a **client-server architecture**:
 
-⚙️ User preference saving & loading
+* 🖥️ **Frontend:** WinForms (.NET 8)
+* 🌐 **Backend:** ASP.NET Core Web API
+* 📡 **External APIs:** TMDB & Watchmode
+* 🗄️ **Database:** PostgreSQL (Supabase)
 
-🛠️ Tech Stack
+---
 
-Frontend
+## 🛠️ Tech Stack
 
-C# WinForms
+### Frontend
 
-.NET 8
+* C# WinForms
+* .NET 8
 
-Backend
+### Backend
 
-ASP.NET Core Web API
+* ASP.NET Core Web API
+* DTO-based architecture
 
-DTO-based architecture
+### Database
 
-TMDB & Watchmode APIs
+* PostgreSQL (Supabase)
 
-Database
+---
 
-PostgreSQL (Supabase)
+## ⚙️ Setup & Run
 
-⚙️ Setup
+### 🔹 1. Clone the repository
 
-Clone the repository
-
+```bash
 git clone https://github.com/Kuro-164/Watch-Guide.git
+```
 
+---
 
-Configure API keys and database connection in appsettings.json
+### 🔹 2. Configure Backend
 
-Run the backend API
+* Open `WatchGuideAPI`
+* Add your API keys (TMDB & Watchmode) in:
 
+```
+appsettings.json
+```
+
+* Configure your PostgreSQL (Supabase) connection string
+
+---
+
+### 🔹 3. Run Backend
+
+```bash
 dotnet run
+```
 
+---
 
-Run the WinForms application from Visual Studio
+### 🔹 4. Run Frontend
 
-📌 Notes
+* Open solution in Visual Studio
+* Set **WinFormsApp1** as Startup Project
+* Run the application
 
-Uses clean DTO-based API responses
+---
 
-Optimized for desktop UI consumption
+## ⚠️ Important Notes
 
-Built for learning and academic purposes
+* Backend must be running before starting the app
+* Requires internet connection for API data
+* Ensure correct Base URL (`localhost`) is configured
 
-📜 License
+---
 
-This project is intended for educational use.
+## 📌 Highlights
+
+* Clean DTO-based API design
+* Separation of frontend & backend
+* Real-world API integration
+* Desktop-optimized UI
+
+---
+
+## 📜 License
+
+This project is intended for **educational and portfolio use**.
