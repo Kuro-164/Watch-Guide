@@ -40,7 +40,7 @@ PostgreSQL (Supabase)
 
 Clone the repository
 
-git clone https://github.com/your-username/WatchGuide.git
+git clone https://github.com/Kuro-164/Watch-Guide.git
 
 
 Configure API keys and database connection in appsettings.json
